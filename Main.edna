@@ -1,0 +1,161 @@
+/*
+This file is part of NetArranger
+<https://github.com/csirmaz/NetArranger>
+
+NetArranger is Copyright (C) Elod Csirmaz 2014
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+This file uses EdnaScript. Please see
+<https://github.com/csirmaz/EdnaScript>
+*/
+
+NetArranger = {};
+
+#class NetArranger.Main
+
+   #constructor(data, options)
+      /*
+         Incoming data has the following format:
+         {
+            <LABEL> : { html:<HTML>, css:<CSS_CLASS>, c:[<LIST OF LABELS>] },
+            ...
+         }
+         The keys 'css' and 'c' are optional.
+
+         Options are optional.
+
+         (!) Create this object after the board DOM element is ready.
+      */
+      // Default options
+      this._options = {
+         board:'#board',
+         boardsize:[500, 500],
+         zoom: 5,
+         arranger_force: -.01,
+         attractor_force: .008,
+         init_heat: 10,
+         min_heat: .001
+      };
+
+      var me = this;
+      if(options){ $.extend(this._options, options); }
+
+      this._boardsize = new NetArranger.Point(this._options.boardsize[0], this._options.boardsize[1]);
+      this._boardoffset = this._boardsize.pclone_div(2);
+      this._options.shakerad = Math.min(this._options.boardsize[0], this._options.boardsize[1]) / this._options.zoom;
+
+      this._board = $(this._options.board).css({ width: this._boardsize._x+'px', height: this._boardsize._y+'px' });
+      this._points = []; // list of WorldPoint objects
+      this._points_labelled = {}; // Pointing from label to WorldPoint objects
+      this._paused = false;
+      this._heat = this._options.init_heat;
+
+      // Construct objects
+      for(var k in data){
+         if(data.hasOwnProperty(k)){
+            this._points_labelled[k] = new NetArranger.WorldPoint({
+               main: this,
+               html: data[k].html,
+               css: data[k].css,
+               x: (Math.random()-.5)*this._options.shakerad,
+               y: (Math.random()-.5)*this._options.shakerad
+            });
+            this._points.push(this._points_labelled[k]);
+         }
+      }
+      this._numpoints = this._points.length;
+
+      // Add connections
+      for(var k in data){
+         if(data.hasOwnProperty(k) && data[k].c){
+            data[k].c.forEach(function(e){
+               this._points_labelled[k].add_connection( this._points_labelled[e] );
+            }, this);
+         }
+      }
+
+      // Start
+      $(function(){
+         setInterval(function(){
+            if(me._paused){ return; }
+            me.step();
+         }, 10);
+
+         // Reduce the heat as time passes
+         setInterval(function(){
+            if(me._paused){ return; }
+            me._heat *= .9;
+         }, 1000);
+      });
+
+   #-constructor
+
+   #method void step()
+      var i, j, davg = 0;
+      for(i=0; i<this._numpoints; i++){
+         this._points[i].add_arranger_attractor();
+      }
+
+      for(i=0; i<this._numpoints; i++){
+         for(j=i+1; j<this._numpoints; j++){
+            this._points[i].add_repulsion_pair( this._points[j] );
+         }
+      }
+
+      for(i=0; i<this._numpoints; i++){
+         davg += this._points[i].apply_replacement(this._heat);
+      }
+
+      // Reduce the heat and stop as the nodes stop
+      davg /= this._numpoints;
+      if(davg < this._heat / 400){
+         this._heat *= .98;
+         if(this._heat < this._options.min_heat ){
+            this._paused = true;
+            try{
+               console.log('NetArranger: Done');
+            }catch(e){}
+         }
+      }
+
+      for(i=0; i<this._numpoints; i++){
+         this._points[i].redraw();
+      }
+   #-method
+
+
+   // Reset the heat to its maximum value
+   #method this resetheat()
+      this._heat = this._options.init_heat;
+      this._paused = false;
+      return this;
+   #-method
+
+   #method this redraw()
+      for(i=0; i<this._numpoints; i++){
+         this._points[i].redraw();
+      }
+      return this;
+   #-method
+
+   // Call zoom(false) to zoom out, and zoom(true) to zoom in
+   #method this zoom(bool zoomin)
+      var displaycenter = this._boardsize.pclone_div(2);
+      this._boardoffset.sub(displaycenter).div(this._options.zoom);
+      this._options.zoom *= (zoomin ? 1.5 : 1/1.5);
+      this._boardoffset.mult(this._options.zoom).add(displaycenter);
+      this.redraw();
+      return this;
+   #-method
+
+   #method this scroll(bool horizontally, bool plusward)
+      var prop = (horizontally ? '_x' : '_y');
+      this._boardoffset[prop] += (plusward ? 1 : -1) * this._boardsize[prop] / 5;
+      this.redraw();
+      return this;
+   #-method
+
+#-class

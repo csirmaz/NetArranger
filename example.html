@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!--
+This file is part of NetArranger
+<https://github.com/csirmaz/NetArranger>
+
+NetArranger is Copyright (C) Elod Csirmaz 2014
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+   <meta http-equiv="Content-Language" content="en" />
+
+   <link rel="stylesheet" type="text/css" href="NetArranger.css" />
+
+   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+   <script type="text/javascript" src="NetArranger.js"></script>
+
+   <title>NetArranger Example</title>
+</head>
+<body>
+
+<h1>NetArranger Example</h1>
+<div id="board"></div>
+
+<ul>
+   <li>Tools:
+      <a href="javascript://" onclick="netarr.zoom(true)">Zoom in</a>
+      <a href="javascript://" onclick="netarr.zoom(false)">Zoom out</a>
+      <a href="javascript://" onclick="netarr.scroll(true, false)">Left</a>
+      <a href="javascript://" onclick="netarr.scroll(true, true)">Right</a>
+      <a href="javascript://" onclick="netarr.scroll(false, false)">Up</a>
+      <a href="javascript://" onclick="netarr.scroll(false, true)">Down</a>
+   </li>
+   <li>Single click on a node to highlight outgoing connections</li>
+   <li>Double-click a node to nudge it to rearrange the graph</li>
+</ul>
+
+<hr/>
+<p>by <a href="http://www.epcsirmaz.com/">Elod Csirmaz</a></p>
+
+<script type="text/javascript">
+netarr = new NetArranger.Main(
+   {
+      'a' : { html:'NA', c:['b', 'c'] },
+      'b' : { html:'NB', c:['d', 'e'] },
+      'c' : { html:'NC', c:['d'] },
+      'd' : { html:'ND', c:['f'] },
+      'e' : { html:'NE', c:['g', 'h'] },
+      'f' : { html:'NF', c:['g'] },
+      'g' : { html:'NG'},
+      'h' : { html:'NH'},
+      'i' : { html:'NI', c:['j']},
+      'j' : { html:'NJ', c:['k']},
+      'k' : { html:'NK'},
+      'l' : { html:'NL', c:['j']},
+      'm' : { html:'NM', c:['n','o']},
+      'n' : { html:'NN', c:['m']},
+      'o' : { html:'NO'},
+      'p' : { html:'NP'}
+   },
+   {
+      board: '#board',
+      boardsize: [500, 500]
+   }
+);
+</script>
+
+</body>
+</html>

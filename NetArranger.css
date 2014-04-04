@@ -1,0 +1,69 @@
+/*
+This file is part of NetArranger
+<https://github.com/csirmaz/NetArranger>
+
+NetArranger is Copyright (C) Elod Csirmaz 2014
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/
+
+#board {
+   background:#eee;
+   position:relative;
+   overflow:hidden;
+}
+
+#board .point {
+   border:1px solid #900;
+   color:#900;
+   font-size:90%;
+   font-family:Arial;
+   line-height:0.9em;
+   background:#fff;
+   position:absolute;
+   border-radius:0.3em;
+   padding:1px;
+
+   filter: alpha(opacity=90);
+   -moz-opacity:0.9;
+   -khtml-opacity: 0.9;
+   opacity: 0.9;
+
+   z-index:2;
+   cursor:pointer;
+}
+
+#board .point.selected{
+   border-color:#f00;
+   color:#f00;
+}
+
+#board .arrow {
+   position:absolute;
+   z-index:1;
+   border-top:5px solid #009;
+   border-right:1px solid #009;
+   border-radius:0 100% 0 0;
+}
+
+#board .arrow.ax{
+   border-right:0 none;
+   border-left:1px solid #009;
+   border-radius:100% 0 0 0;
+}
+
+#board .arrow.ay{
+   border-top:0 none;
+   border-bottom:5px solid #009;
+   border-radius:0 0 100% 0;
+}
+
+#board .arrow.ax.ay{
+   border-radius:0 0 0 100%;
+}
+
+#board .arrow.selected{
+   border-color:#f00;
+}

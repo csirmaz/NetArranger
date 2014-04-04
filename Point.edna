@@ -1,0 +1,127 @@
+/*
+This file is part of NetArranger
+<https://github.com/csirmaz/NetArranger>
+
+NetArranger is Copyright (C) Elod Csirmaz 2014
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+This file uses EdnaScript. Please see
+<https://github.com/csirmaz/EdnaScript>
+*/
+
+#class NetArranger.Point
+// Represents a 2D point or vector
+
+   #constructor(float x, float y)
+      this._x = x;
+      this._y = y;
+   #-constructor
+
+   #method string info()
+      return ('('+this._x+','+this._y+')');
+   #-method
+
+   #method NetArranger.Point pclone()
+      return new NetArranger.Point(this._x, this._y);
+   #-method
+
+   // Modifies and returns the current object
+   #method this add(NetArranger.Point other)
+      this._x += other._x;
+      this._y += other._y;
+      return this;
+   #-method
+
+   // Creates a new NetArranger.Point
+   #method NetArranger.Point pclone_add(NetArranger.Point other)
+      return new NetArranger.Point(other._x + this._x, other._y + this._y);
+   #-method
+
+   // Modifies and returns the current object
+   #method this sub(NetArranger.Point other)
+      this._x -= other._x;
+      this._y -= other._y;
+      return this;
+   #-method
+
+   // Creates a new NetArranger.Point
+   #method NetArranger.Point pclone_sub(NetArranger.Point other)
+      return new NetArranger.Point(this._x - other._x, this._y - other._y);
+   #-method
+
+   // Modifies and returns the current object
+   #method this mult(float d)
+      this._x *= d;
+      this._y *= d;
+      return this;
+   #-method
+
+   // Creates a new NetArranger.Point
+   #method NetArranger.Point pclone_mult(float d)
+      return new NetArranger.Point(this._x * d, this._y * d);
+   #-method
+
+   // Modifies and returns the current object
+   #method this diag(float d, float e)
+      this._x *= d;
+      this._y *= e;
+      return this;
+   #-method
+
+   // Creates a new NetArranger.Point
+   #method NetArranger.Point pclone_diag(float d, float e)
+      return new NetArranger.Point(this._x * d, this._y * e);
+   #-method
+
+   // Modifies and returns the current object
+   #method this div(float d)
+      this._x /= d;
+      this._y /= d;
+      return this;
+   #-method
+
+   // Creates a new NetArranger.Point
+   #method NetArranger.Point pclone_div(float d)
+      return new NetArranger.Point(this._x / d, this._y / d);
+   #-method
+
+   // Modifies and returns the current object
+   #method this normalise()
+      var l = this.length();
+      if(l == 0){ l = 1; }
+      this._x /= l;
+      this._y /= l;
+      return this;
+   #-method
+
+   // Creates a new NetArranger.Point
+   #method this pclone_normalise()
+      var l = this.length();
+      if(l == 0){ l = 1; }
+      return new NetArranger.Point(this._x / l, this._y / l);
+   #-method
+
+   #method float length()
+      return Math.sqrt(this._x*this._x + this._y*this._y);
+   #-method
+
+   // Returns the square of the length of a vector
+   #method float length2()
+      return this._x*this._x + this._y*this._y;
+   #-method
+
+   // Returns the distance between two points
+   #method float dist(NetArranger.Point other)
+      var dx = this._x - other._x;
+      var dy = this._y - other._y;
+      return Math.sqrt(dx*dx+dy*dy);
+   #-method
+
+   #method bool is_same_location(NetArranger.Point other)
+      return ((this._x == other._x) && (this._y == other._y));
+   #-method
+
+#-class

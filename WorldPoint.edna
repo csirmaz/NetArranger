@@ -1,0 +1,134 @@
+/*
+This file is part of NetArranger
+<https://github.com/csirmaz/NetArranger>
+
+NetArranger is Copyright (C) Elod Csirmaz 2014
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+This file uses EdnaScript. Please see
+<https://github.com/csirmaz/EdnaScript>
+*/
+
+#class NetArranger.WorldPoint
+#base NetArranger.Point
+
+   #constructor(d)
+      /*
+         Incoming data:
+         d.x
+         d.y
+         d.html
+         d.css (optional)
+         d.main
+      */
+      var me = this;
+
+      this._x = d.x;
+      this._y = d.y;
+      #nosuper
+
+      this._main = d.main;
+      this._connectto = []; // array of [NetArranger.WorldPoint dest, jQuery ArrowObj]
+      this._displacement = new NetArranger.Point(0, 0);
+      this._obj = $(
+         '<div class="point'+(typeof(d.css)=='undefined'?'':(' '+d.css))+'">'+d.html+'</div>'
+      ).appendTo(this._main._board);
+
+      this._offset = new NetArranger.Point(0, 0); // Initial value
+      setTimeout(function(){
+         me._offset = new NetArranger.Point(me._obj.width()/2, me._obj.height()/2);
+      }, 100); // Allow time for the browser to render the element
+
+      // Highlight node and outgoing connections on a click,
+      // Nudge the node on a double-click
+      this._obj
+      .click(function(){
+         me._main._board.find('div').removeClass('selected');
+         me._obj.addClass('selected');
+         me._connectto.forEach(function(e){ e[1].addClass('selected'); });
+      })
+      .dblclick(function(){
+         me._x += (Math.random()-.5) * me._main._options.shakerad / 2;
+         me._y += (Math.random()-.5) * me._main._options.shakerad / 2;
+         me._main.resetheat();
+         return false;
+      });
+
+      this.redraw();
+   #-constructor
+
+   #method this add_connection(NetArranger.WorldPoint other)
+      this._connectto.push([
+         other,
+         $('<div class="arrow"></div>').appendTo(this._main._board)
+      ]);
+      return this;
+   #-method
+
+   // Update _displacement with the arranger force and the attractor force
+   #method this add_arranger_attractor()
+      // Arranger force
+      // This prevents migration as it points towards the origin
+      // An arranger force that increases linearly with the distance
+      this._displacement.add( this.pclone_mult(this._main._options.arranger_force) );
+
+      // Attractor force
+      // In both directions to prevent rotation
+      this._connectto.forEach(function(e){
+         var d = e[0].pclone_sub(this).mult(this._main._options.attractor_force);
+         this._displacement.add(d);
+         e[0]._displacement.add( d.mult(-1) );
+      }, this);
+   #-method
+
+   // Update _displacement for a pair of points with the repulsion force
+   #method this add_repulsion_pair(NetArranger.Point other)
+      var d = this.pclone_sub(other);
+      var dl = d.length2();
+      if(dl>0){
+         d.div(dl);
+      }
+      else{
+         d = new NetArranger.Point(Math.random(), Math.random());
+      }
+      this._displacement.add(d);
+      other._displacement.add( d.mult(-1) );
+      return this;
+   #-method
+
+   // Returns the length of the displacement
+   #method float apply_replacement(heat)
+      var l = this._displacement.mult(heat).length();
+      this.add(this._displacement);
+      this._displacement = new NetArranger.Point(0, 0);
+      return l;
+   #-method
+
+   #method this redraw()
+      // Move the point object
+      var objplace = this.pclone_mult(this._main._options.zoom).sub(this._offset);
+      this._obj.css({
+         left: this._main._boardoffset._x + objplace._x + 'px',
+         top:  this._main._boardoffset._y + objplace._y + 'px'
+      });
+
+      // Move the arrow objects
+      this._connectto.forEach(function(e){
+         var ax = this._x - e[0]._x;
+         var ay = this._y - e[0]._y;
+         e[1].css({
+            left: this._main._boardoffset._x + this._main._options.zoom * Math.min(this._x, e[0]._x) + 'px',
+            top:  this._main._boardoffset._y + this._main._options.zoom * Math.min(this._y, e[0]._y) + 'px',
+            width:  this._main._options.zoom * Math.abs(ax) + 'px',
+            height: this._main._options.zoom * Math.abs(ay) + 'px'
+         })
+         .toggleClass('ax',(ax<0)?false:true)
+         .toggleClass('ay',(ay<0)?false:true);
+      }, this);
+      return this;
+   #-method
+
+#-class

@@ -17,6 +17,8 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 ![NetArranger screenshot](https://raw.github.com/wiki/csirmaz/NetArranger/NetArranger.png)
 
+Check out NetArranger live in action at http://www.epcsirmaz.com/NetArranger/
+
 ## Features
 
 * Object-oriented code; can be used multiple times on a page

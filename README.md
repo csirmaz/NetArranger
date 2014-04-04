@@ -15,6 +15,8 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+![NetArranger screenshot](https://raw.github.com/wiki/csirmaz/NetArranger/NetArranger.png)
+
 ## Features
 
 * Object-oriented code; can be used multiple times on a page
@@ -31,8 +33,8 @@ preprocessor from https://github.com/csirmaz/EdnaScript ,
 and simply run *make* to compile *NetArranger.js*.
 
 To use NetArranger,
-include the CSS and JS libraries of NetArranger
-in the HEAD of a webpage, and define a
+include jQuery, the NetArranger.css and NetArranger.js
+libraries in the HEAD section of a webpage, and define a
 DIV container in the body with an appropriate class or ID,
 for example,
 ```

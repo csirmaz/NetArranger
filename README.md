@@ -31,6 +31,9 @@ NetArranger uses jQuery and is written using EdnaScript.
 If you have downloaded the source, get the EdnaScript
 preprocessor from https://github.com/csirmaz/EdnaScript ,
 and simply run *make* to compile *NetArranger.js*.
+Alternatively, download the compiled files directly
+from the latest release at
+https://github.com/csirmaz/NetArranger/releases/latest .
 
 To use NetArranger,
 include jQuery, the NetArranger.css and NetArranger.js

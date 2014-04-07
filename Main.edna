@@ -88,7 +88,12 @@ NetArranger = {};
       for(var k in data){
          if(data.hasOwnProperty(k) && data[k].c){
             data[k].c.forEach(function(e){
-               this._points_labelled[k].add_connection( this._points_labelled[e] );
+               if( typeof(this._points_labelled[e]) == 'undefined' ){
+                  try{ console.log('NetArranger: unknown reference', e); }catch(e){}
+               }
+               else{
+                  this._points_labelled[k].add_connection( this._points_labelled[e] );
+               }
             }, this);
          }
       }

@@ -89,7 +89,8 @@ All options are optional.
 | attractor_force | Strength of the "force" attracting connected nodes | .008 |
 | init_heat | Inital length of displacement | 10 |
 | min_heat | Length of displacement is reduced until it reaches this value, when the process stops | .001 |
-
+| heat_reduction_time | The "heat" is reduced when the nodes stop moving, and also after every N ms
+specified here. Increase the number for large graphs. | 1000 |
 
 ## JavaScript interactions
 

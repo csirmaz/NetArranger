@@ -53,7 +53,8 @@ NetArranger = {};
          arranger_force: -.01,
          attractor_force: .008,
          init_heat: 10,
-         min_heat: .001
+         min_heat: .001,
+         heat_reduction_time: 1000
       };
 
       var me = this;
@@ -109,7 +110,7 @@ NetArranger = {};
          setInterval(function(){
             if(me._paused){ return; }
             me._heat *= .9;
-         }, 1000);
+         }, me._options.heat_reduction_time);
       });
 
    #-constructor

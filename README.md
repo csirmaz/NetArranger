@@ -63,7 +63,7 @@ Each node has a label (which is not visible), followed by an inner object
 that has the following keys or properties:
 
 * html -- specifies the HTML displayed inside the node
-* css -- optional; CSS classes added to the node
+* css -- optional; CSS classes added to the node and outgoing connections
 * c -- optional; a list of labels representing the connections from the current node.
 
 The second object lists options for NetArranger.

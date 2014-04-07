@@ -49,8 +49,9 @@ This file uses EdnaScript. Please see
       this._main = d.main;
       this._connectto = []; // array of [NetArranger.WorldPoint dest, jQuery ArrowObj]
       this._displacement = new NetArranger.Point(0, 0);
+      this._css = (typeof(d.css)=='undefined'?'':(' '+d.css));
       this._obj = $(
-         '<div class="point'+(typeof(d.css)=='undefined'?'':(' '+d.css))+'">'+d.html+'</div>'
+         '<div class="point'+this._css+'">'+d.html+'</div>'
       ).appendTo(this._main._board);
 
       this._offset = new NetArranger.Point(0, 0); // Initial value
@@ -87,7 +88,7 @@ This file uses EdnaScript. Please see
    #method this add_connection(NetArranger.WorldPoint other)
       this._connectto.push([
          other,
-         $('<div class="arrow"></div>').appendTo(this._main._board)
+         $('<div class="arrow'+this._css+'"></div>').appendTo(this._main._board)
       ]);
       return this;
    #-method

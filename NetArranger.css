@@ -51,11 +51,11 @@ THE SOFTWARE.
    cursor:pointer;
 }
 
-#board .point.selected{
+body #board .point.selected{
    border-color:#f00;
    color:#f00;
 }
-#board .point.selected_dest{
+body #board .point.selected_dest{
    color:#f00;
 }
 
@@ -83,6 +83,6 @@ THE SOFTWARE.
    border-radius:0 0 0 100%;
 }
 
-#board .arrow.selected{
+body #board .arrow.selected{
    border-color:#f00;
 }

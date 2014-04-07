@@ -97,9 +97,10 @@ specified here. Increase the number for large graphs. | 1000 |
 There are various methods one can call on the NetArranger.Main object to interact with
 the board. Call:
 
-* zoom(true) to zoom in
-* zoom(false) to zoom out
-* scroll(true, false) to scroll left
-* scroll(true, true) to scroll right
-* scroll(false, false) to scroll up
-* scroll(false, true) to scroll down
+* mynetarranger.zoom(true) to zoom in
+* mynetarranger.zoom(false) to zoom out
+* mynetarranger.scroll(true, false) to scroll left
+* mynetarranger.scroll(true, true) to scroll right
+* mynetarranger.scroll(false, false) to scroll up
+* mynetarranger.scroll(false, true) to scroll down
+* mynetarranger.resetheat() to continue arranging with the original speed

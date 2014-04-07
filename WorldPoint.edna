@@ -58,19 +58,27 @@ This file uses EdnaScript. Please see
          me._offset = new NetArranger.Point(me._obj.width()/2, me._obj.height()/2);
       }, 100); // Allow time for the browser to render the element
 
-      // Highlight node and outgoing connections on a click,
-      // Nudge the node on a double-click
+      this._dragged = false; // false or a Point object
+
       this._obj
-      .click(function(){
-         me._main._board.find('div').removeClass('selected');
+      .mousedown(function(e){
+         // Highlight node and outgoing connections
+         me._main._board.find('div').removeClass('selected selected_dest');
          me._obj.addClass('selected');
-         me._connectto.forEach(function(e){ e[1].addClass('selected'); });
-      })
-      .dblclick(function(){
-         me._x += (Math.random()-.5) * me._main._options.shakerad / 2;
-         me._y += (Math.random()-.5) * me._main._options.shakerad / 2;
-         me._main.resetheat();
-         return false;
+         me._connectto.forEach(function(e){
+            e[0]._obj.addClass('selected_dest'); // destination
+            e[1].addClass('selected'); // edge
+         });
+
+         // Begin dragging
+         me._main._draggednode = [
+            me,
+            me._x - e.pageX / me._main._options.zoom,
+            me._y - e.pageY / me._main._options.zoom
+         ];
+
+         // Prevent text selection
+         e.preventDefault();
       });
 
       this.redraw();
@@ -117,8 +125,14 @@ This file uses EdnaScript. Please see
 
    // Returns the length of the displacement
    #method float apply_replacement(heat)
-      var l = this._displacement.mult(heat).length();
-      this.add(this._displacement);
+      var l;
+      if(this._main._draggednode[0] === this){
+         l=0;
+      }
+      else{
+         l = this._displacement.mult(heat).length();
+         this.add(this._displacement);
+      }
       this._displacement = new NetArranger.Point(0, 0);
       return l;
    #-method

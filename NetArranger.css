@@ -32,8 +32,8 @@ THE SOFTWARE.
 }
 
 #board .point {
-   border:1px solid #900;
-   color:#900;
+   border:1px solid #700;
+   color:#700;
    font-size:90%;
    font-family:Arial;
    line-height:0.9em;
@@ -53,6 +53,9 @@ THE SOFTWARE.
 
 #board .point.selected{
    border-color:#f00;
+   color:#f00;
+}
+#board .point.selected_dest{
    color:#f00;
 }
 

@@ -69,6 +69,7 @@ NetArranger = {};
       this._points_labelled = {}; // Pointing from label to WorldPoint objects
       this._paused = false;
       this._heat = this._options.init_heat;
+      this._draggednode = false; // false or [WorldPoint, offsetX, offsetY]
 
       // Construct objects
       for(var k in data){
@@ -98,6 +99,21 @@ NetArranger = {};
             }, this);
          }
       }
+
+      // Mouse interactions
+      this._board
+      .mousemove(function(e){
+         if(me._draggednode === false){ return; }
+         var o = me._draggednode[0];
+         o._x = me._draggednode[1] + e.pageX / me._options.zoom;
+         o._y = me._draggednode[2] + e.pageY / me._options.zoom;
+         o.redraw();
+         me.resetheat();
+      })
+      .mouseup(function(e){
+         me._draggednode = false;
+      });
+
 
       // Start
       $(function(){

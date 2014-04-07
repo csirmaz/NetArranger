@@ -22,8 +22,8 @@ Check out NetArranger live in action at http://www.epcsirmaz.com/NetArranger/
 
 * Object-oriented code; can be used multiple times on a page
 * Click on a node to highlight outgoing connections
+* Drag nodes to help arrange the graph
 * Connections leave a node horizontally and arrive at the destination node vertically
-* Double-click a node to nudge it to rearrange the graph
 * Tools implemented to zoom in and out and scroll the viewport
 
 ## Getting started

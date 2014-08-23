@@ -41,13 +41,13 @@ include jQuery, the NetArranger.css and NetArranger.js
 libraries in the HEAD section of a webpage, and define a
 DIV container in the body with an appropriate class or ID,
 for example,
-```
+```HTML
 <div id="board">
 ```
 
 After the definition of the DIV,
 in a JavaScript block, call
-```
+```JavaScript
 mynetarranger = new NetArranger.Main(
    { // Data
       'nodelabel1' : { html:'<b>MyNode1</b>', css:'mycssclass', c:['nodelabel2']},

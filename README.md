@@ -16,7 +16,7 @@ it under the terms of the MIT License.
 
 ![NetArranger screenshot](https://raw.github.com/wiki/csirmaz/NetArranger/NetArranger.png)
 
-Check out NetArranger live in action at http://www.epcsirmaz.com/NetArranger/
+Check out NetArranger live in action at https://csirmaz.github.io/NetArranger/
 
 ## Features
 
